@@ -144,8 +144,9 @@
     // Codificar datos en el link
     const jsonStr = JSON.stringify(data);
     const encoded = encodeURIComponent(jsonStr);
-    // Limitar tamaño para URL segura (si es muy largo usar compresión o base64, pero para esta demo usamos simple)
-    const finalUrl = `https://landing-vendedores-chi.vercel.app/index.html?data=${encoded}`;
+    
+    // CORRECCIÓN AQUÍ: URL APUNTANDO AL REPO NUEVO
+    const finalUrl = `https://pack-s2a.vercel.app/index.html?data=${encoded}`;
     
     document.getElementById('finalLink').textContent = finalUrl;
     document.getElementById('resultado').style.display = 'block';
@@ -157,4 +158,4 @@
   }
 </script>
 </body>
-    </html>
+</html>
