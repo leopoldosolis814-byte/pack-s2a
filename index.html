@@ -51,11 +51,10 @@
 
       let html = '';
       data.items.forEach((item, index) => {
-        // Creamos un ID único para cada item para las acciones
         const itemId = `item-${index}`;
         
-        // Generamos el link de conversión específico para este item
-        const convUrl = `https://landing-vendedores-chi.vercel.app/conversion.html?name=${encodeURIComponent(item.name)}&price=${encodeURIComponent(item.price)}&desc=${encodeURIComponent(item.desc)}&img=${encodeURIComponent(item.img)}&wa=${data.wa}&logo=${encodeURIComponent(data.logo)}`;
+        // CORRECCIÓN: URL APUNTANDO AL REPO NUEVO PARA LA CONVERSIÓN
+        const convUrl = `https://pack-s2a.vercel.app/conversion.html?name=${encodeURIComponent(item.name)}&price=${encodeURIComponent(item.price)}&desc=${encodeURIComponent(item.desc)}&img=${encodeURIComponent(item.img)}&wa=${data.wa}&logo=${encodeURIComponent(data.logo)}`;
 
         html += `
           <div class="card">
@@ -98,7 +97,7 @@
       logo.crossOrigin = "Anonymous";
       logo.src = logoUrl;
       logo.onload = () => {
-        const size = canvas.width * 0.2; // Logo 20% del ancho
+        const size = canvas.width * 0.2; 
         ctx.drawImage(logo, canvas.width - size - 20, 20, size, size * (logo.height/logo.width));
         triggerDownload(canvas, filename);
       };
