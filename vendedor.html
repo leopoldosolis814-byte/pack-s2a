@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Vendedores - S2A</title>
+<script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+<style>
+  body { background: #050505; color: #fff; font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+  h2 { color: #ff0055; text-align: center; }
+  .section { background: #111; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #333; }
+  label { color: #ffe600; font-size: 12px; display: block; margin-top: 10px; font-weight: bold; }
+  input, textarea { width: 100%; padding: 10px; background: #000; border: 1px solid #444; color: #fff; border-radius: 6px; margin-top: 5px; box-sizing: border-box; }
+  .card { background: #1a1a24; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 3px solid #00ffaa; position: relative; }
+  .card h3 { margin: 0 0 10px 0; color: #00ffaa; font-size: 14px; }
+  .btn { background: #ff0055; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; font-size: 14px; }
+  .btn:hover { background: #ff2277; }
+  .btn-green { background: #00aa00; }
+  .btn-green:hover { background: #00cc00; }
+  .preview-img { max-width: 100px; margin: 10px 0; border-radius: 6px; display: block; }
+  .delete-btn { position: absolute; top: 10px; right: 10px; background: #ff0000; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; }
+  #resultado { display: none; background: #111; padding: 20px; border-radius: 10px; margin-top: 20px; border: 1px solid #ff0055; }
+  .link-box { background: #000; padding: 10px; border-radius: 6px; font-size: 10px; word-break: break-all; margin-bottom: 10px; color: #aaa; }
+</style>
+</head>
+<body>
+
+<h2>🚀 PANEL DE VENDEDORES</h2>
+
+<!-- DATOS GENERALES DEL LOCAL -->
+<div class="section">
+  <h3 style="color:#ffe600; margin:0;">📍 DATOS GENERALES DEL LOCAL</h3>
+  <label>Nombre del Local</label>
+  <input type="text" id="localName" placeholder="Ej: Pepín Burger">
+  <label>WhatsApp (solo números)</label>
+  <input type="text" id="localWA" placeholder="Ej: 5491112345678">
+  <label>Logo del Local (URL)</label>
+  <button class="btn" style="background:#333" onclick="openWidget('logo')">📤 Subir Logo</button>
+  <img id="previewLogo" class="preview-img">
+  <input type="hidden" id="logoUrl">
+</div>
+
+<!-- LISTA DE PRODUCTOS/IMÁGENES -->
+<div class="section">
+  <h3 style="color:#ffe600; margin:0;">📦 PRODUCTOS / IMÁGENES DEL PACK</h3>
+  <p style="font-size:11px; color:#888;">Agregá tantos productos como quieras. Cada uno tendrá su propia landing de venta.</p>
+  <button class="btn btn-green" onclick="addProduct()">+ AGREGAR NUEVO PRODUCTO</button>
+  <div id="productsContainer"></div>
+</div>
+
+<button class="btn" style="font-size:18px; padding:15px;" onclick="generateLink()">🎯 GENERAR LINK PARA EL CLIENTE</button>
+
+<div id="resultado">
+  <label>✅ LINK FINAL (Copiá y mandá al cliente):</label>
+  <div class="link-box" id="finalLink"></div>
+  <button class="btn btn-green" onclick="copyLink()">📋 COPIAR LINK</button>
+</div>
+
+<script>
+  let products = [];
+  const cloudWidget = cloudinary.createUploadWidget({ cloudName: 'ds2udm1nc', uploadPreset: 's2a_packs' }, (error, result) => {
+    if (!error && result && result.event === "success") {
+      window.currentCallback(result.info.secure_url);
+    }
+  });
+
+  function openWidget(targetId) {
+    cloudWidget.open();
+    window.currentCallback = (url) => {
+      if(targetId === 'logo') {
+        document.getElementById('logoUrl').value = url;
+        document.getElementById('previewLogo').src = url;
+      } else {
+        document.getElementById(targetId).value = url;
+        document.getElementById(targetId.replace('Img','Preview')).src = url;
+      }
+    };
+  }
+
+  function addProduct() {
+    const id = Date.now();
+    const container = document.getElementById('productsContainer');
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = `card-${id}`;
+    div.innerHTML = `
+      <button class="delete-btn" onclick="removeProduct(${id})">X</button>
+      <h3>📸 Producto #${products.length + 1}</h3>
+      
+      <label>Imagen del Producto</label>
+      <button class="btn" style="background:#333; font-size:12px;" onclick="openWidget('img-${id}')">📤 Subir Foto</button>
+      <img id="img-${id}Preview" class="preview-img">
+      <input type="hidden" id="img-${id}">
+
+      <label>Nombre del Producto</label>
+      <input type="text" id="name-${id}" placeholder="Ej: Pizza Especial">
+
+      <label>Precio</label>
+      <input type="text" id="price-${id}" placeholder="Ej: $8.900">
+
+      <label>Descripción (breve)</label>
+      <textarea id="desc-${id}" placeholder="Ej: Muzzarella, jamón y morrón"></textarea>
+
+      <label>Frase para Sticker (Instagram)</label>
+      <input type="text" id="phrase-${id}" placeholder="Ej: ¡Click si amas la pizza! 🍕">
+    `;
+    container.appendChild(div);
+    products.push(id);
+  }
+
+  function removeProduct(id) {
+    document.getElementById(`card-${id}`).remove();
+    products = products.filter(p => p !== id);
+  }
+
+  function generateLink() {
+    const local = document.getElementById('localName').value;
+    const wa = document.getElementById('localWA').value;
+    const logo = document.getElementById('logoUrl').value;
+
+    if(!local || !wa) return alert("Completá los datos del local");
+    if(products.length === 0) return alert("Agregá al menos un producto");
+
+    const items = [];
+    products.forEach(id => {
+      const img = document.getElementById(`img-${id}`).value;
+      if(!img) return alert("Subí la imagen para un producto");
+      items.push({
+        img: img,
+        name: document.getElementById(`name-${id}`).value,
+        price: document.getElementById(`price-${id}`).value,
+        desc: document.getElementById(`desc-${id}`).value,
+        phrase: document.getElementById(`phrase-${id}`).value
+      });
+    });
+
+    const data = {
+      local: local,
+      wa: wa,
+      logo: logo,
+      items: items
+    };
+
+    // Codificar datos en el link
+    const jsonStr = JSON.stringify(data);
+    const encoded = encodeURIComponent(jsonStr);
+    // Limitar tamaño para URL segura (si es muy largo usar compresión o base64, pero para esta demo usamos simple)
+    const finalUrl = `https://landing-vendedores-chi.vercel.app/index.html?data=${encoded}`;
+    
+    document.getElementById('finalLink').textContent = finalUrl;
+    document.getElementById('resultado').style.display = 'block';
+  }
+
+  function copyLink() {
+    const text = document.getElementById('finalLink').textContent;
+    navigator.clipboard.writeText(text).then(() => alert("¡Copiado!"));
+  }
+</script>
+</body>
+    </html>
