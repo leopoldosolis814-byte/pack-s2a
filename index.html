@@ -3,78 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack S2A</title>
+<title>S2A Studio — Hamburguesería</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-body {
-  background:#0b0b0b;
-  font-family:Arial;
-  color:white;
-  padding:20px;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.card {
-  background:#111;
-  padding:10px;
-  border-radius:10px;
-}
-
-img {
-  width:100%;
-  border-radius:10px;
-}
-
-button {
-  margin-top:10px;
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:#ff2d78;
-  color:white;
-  font-weight:bold;
-}
+  :root {
+    --bg:#07070f; --bg2:#0e0e1a; --fucsia:#ff2d78;
+    --amarillo:#ffe600; --blanco:#fff; --gris:#666680; --gris2:#333345;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--blanco);font-family:'Nunito',sans-serif;}
+  .content-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:20px;}
+  .item{background:var(--bg2);border-radius:10px;overflow:hidden;}
+  .thumb{width:100%;aspect-ratio:9/16;object-fit:cover;}
+  .item-foot{padding:10px;}
+  .btn-copy,.btn-dl{
+    width:100%;padding:10px;border:none;border-radius:6px;
+    margin-top:6px;font-family:'Bebas Neue';letter-spacing:2px;
+  }
+  .btn-copy{background:transparent;color:var(--gris);border:1px solid var(--gris2);}
+  .btn-dl{background:var(--fucsia);color:white;}
 </style>
 </head>
 
 <body>
 
-<div class="grid" id="grid"></div>
+<div class="content-grid" id="gImg"></div>
 
 <script>
 
 const params = new URLSearchParams(window.location.search);
 
-const items = [
-  {id:1, img:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263235/Gemini_Generated_Image_bruchsbruchsbruc_etzmgj.png"},
-  {id:2, img:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_ehiim7ehiim7ehii_i5crwt.png"},
-  {id:3, img:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_sbvguqsbvguqsbvg_vjubkz.png"}
+// 🔥 LINK DINÁMICO
+const linkGlobal = params.get("link") || "https://tulocal.com";
+
+// 🔥 ACTIVAS
+const activas = new Set(
+  (params.get("activas") || "").split(",").map(Number)
+);
+
+// 🔥 IMÁGENES
+const IMGS = [
+  {id:1,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263235/Gemini_Generated_Image_bruchsbruchsbruc_etzmgj.png"},
+  {id:2,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_ehiim7ehiim7ehii_i5crwt.png"},
+  {id:3,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_sbvguqsbvguqsbvg_vjubkz.png"},
+  {id:4,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263238/Copilot_20260315_233635_sbtrat.png"}
 ];
 
-function copyLink(link){
-  navigator.clipboard.writeText(link);
-  alert("Link copiado");
+// 🔥 COPIAR
+function copyLink(btn){
+  navigator.clipboard.writeText(linkGlobal);
+  btn.innerText="COPIADO";
+  setTimeout(()=>btn.innerText="COPIAR ENLACE",1500);
 }
 
+// 🔥 RENDER
 function render(){
-  const grid = document.getElementById("grid");
+  const g = document.getElementById("gImg");
 
-  items.forEach(item => {
+  IMGS.forEach(i=>{
+    const activa = activas.has(i.id);
 
-    const link = params.get("link" + item.id) || "https://tulocal.com";
+    g.innerHTML += `
+      <div class="item">
+        <img class="thumb" src="${i.src}">
+        <div class="item-foot">
 
-    grid.innerHTML += `
-      <div class="card">
-        <img src="${item.img}">
-        <button onclick="copyLink('${link}')">
-          COPIAR LINK
-        </button>
+        ${activa ? `
+          <a class="btn-dl" href="${i.src}" target="_blank">DESCARGAR</a>
+          <button class="btn-copy" onclick="copyLink(this)">COPIAR ENLACE</button>
+        ` : `
+          <div style="opacity:.3;text-align:center">🔒 BLOQUEADO</div>
+        `}
+
+        </div>
       </div>
     `;
   });
