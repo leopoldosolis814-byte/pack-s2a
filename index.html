@@ -8,122 +8,103 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-:root{--bg:#07070f;--bg2:#0e0e1a;--fucsia:#ff2d78;--amarillo:#ffe600;--blanco:#fff;--gris:#666680;--gris2:#333345;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--blanco);font-family:'Nunito',sans-serif;}
-
-.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:20px;}
-
-.item{background:var(--bg2);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);}
-.thumb{width:100%;aspect-ratio:9/16;object-fit:cover;}
-.item-foot{padding:10px;}
-
-.item-link{font-size:10px;color:var(--amarillo);margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;}
-
-.btn-copy,.btn-dl{
-width:100%;
-padding:9px;
-border-radius:6px;
-font-family:'Bebas Neue';
-letter-spacing:2px;
-margin-top:6px;
+:root {
+  --bg:#07070f; --bg2:#0e0e1a;
+  --fucsia:#ff2d78; --amarillo:#ffe600;
+  --blanco:#fff; --gris:#666680; --gris2:#333345;
 }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--blanco);font-family:'Nunito',sans-serif}
+
+.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:20px}
+
+.item{background:var(--bg2);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.05)}
+.thumb-wrap{aspect-ratio:9/16;position:relative}
+.thumb{width:100%;height:100%;object-fit:cover}
+
+.item-foot{padding:10px}
+.item-link{font-size:10px;color:var(--amarillo);margin-bottom:6px}
 
 .btn-copy{
-background:transparent;
-border:1px solid var(--gris2);
-color:var(--gris);
-}
-
-.btn-copy.copied{
-border-color:var(--fucsia);
-color:var(--fucsia);
+  width:100%;
+  border:1px solid var(--gris2);
+  background:transparent;
+  color:var(--gris);
+  padding:8px;
+  border-radius:6px;
+  margin-bottom:6px;
 }
 
 .btn-dl{
-background:var(--fucsia);
-color:#fff;
-text-decoration:none;
-display:block;
-text-align:center;
+  width:100%;
+  background:var(--fucsia);
+  color:#fff;
+  padding:10px;
+  border-radius:6px;
+  text-decoration:none;
+  display:block;
+  text-align:center;
 }
 </style>
 </head>
 
 <body>
 
-<div class="content-grid" id="gImg"></div>
+<div class="content-grid" id="grid"></div>
 
 <script>
+/* 🔥 LINK DINÁMICO EXTERNO */
+const linkGlobal = new URLSearchParams(window.location.search).get('link') || 'tulocal.com/promo';
 
-// 🔥 PARAMS
-const params = new URLSearchParams(window.location.search);
-
-// 🔥 LINK DINÁMICO
-const linkGlobal = params.get("link") || "https://tulocal.com";
-
-// 🔥 ACTIVAS
+/* ACTIVAS */
 const activas = new Set(
-  (params.get("activas") || "").split(",").map(Number).filter(Boolean)
+  (new URLSearchParams(window.location.search).get('activas') || '')
+    .split(',').map(Number)
 );
 
-// 🔥 IMÁGENES
+/* IMÁGENES */
 const IMGS = [
-{ id:1,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263235/Gemini_Generated_Image_bruchsbruchsbruc_etzmgj.png"},
-{ id:2,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_ehiim7ehiim7ehii_i5crwt.png"},
-{ id:3,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_sbvguqsbvguqsbvg_vjubkz.png"},
-{ id:4,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263238/Copilot_20260315_233635_sbtrat.png"},
-{ id:5,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263716/Copilot_20260314_071451_przxv4.png"},
-{ id:6,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263716/Copilot_20260314_071211_qm7jab.png"},
-{ id:7,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263717/Gemini_Generated_Image_ogy5k5ogy5k5ogy5_aycznb.png"},
-{ id:8,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263718/Gemini_Generated_Image_ducsgqducsgqducs_es4g86.png"},
-{ id:9,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263718/Copilot_20260314_065249_x97xrh.png"},
-{ id:10,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264237/Copilot_20260403_215554_do60bt.png"},
-{ id:11,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264267/Gemini_Generated_Image_ducsgqducsgqducs_tshxtu.png"},
-{ id:12,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264370/Copilot_20260314_081306_boln31.png"}
+  {id:1,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263235/Gemini_Generated_Image_bruchsbruchsbruc_etzmgj.png"},
+  {id:2,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_ehiim7ehiim7ehii_i5crwt.png"},
+  {id:3,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_sbvguqsbvguqsbvg_vjubkz.png"},
+  {id:4,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263238/Copilot_20260315_233635_sbtrat.png"},
+  {id:5,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263716/Copilot_20260314_071451_przxv4.png"},
+  {id:6,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263716/Copilot_20260314_071211_qm7jab.png"},
 ];
 
-// 🔥 COPIAR LINK
-function copyLink(btn){
-navigator.clipboard.writeText(linkGlobal).then(()=>{
-btn.textContent="✅ COPIADO";
-btn.classList.add("copied");
-setTimeout(()=>{
-btn.textContent="🔗 ENLACE DE TU LANDING";
-btn.classList.remove("copied");
-},2000);
+/* RENDER */
+const grid = document.getElementById('grid');
+
+IMGS.forEach(img=>{
+  if(!activas.has(img.id)) return;
+
+  grid.innerHTML += `
+  <div class="item">
+    <div class="thumb-wrap">
+      <img class="thumb" src="${img.src}">
+    </div>
+
+    <div class="item-foot">
+      <div class="item-link">${linkGlobal}</div>
+
+      <button class="btn-copy" onclick="copyLink('${linkGlobal}', this)">
+        🔗 COPIAR ENLACE
+      </button>
+
+      <a class="btn-dl" href="${img.src}" target="_blank">
+        ⬇ DESCARGAR
+      </a>
+    </div>
+  </div>
+  `;
 });
+
+/* COPIAR */
+function copyLink(link,btn){
+  navigator.clipboard.writeText(link);
+  btn.innerText="✅ COPIADO";
+  setTimeout(()=>btn.innerText="🔗 COPIAR ENLACE",1500);
 }
-
-// 🔥 RENDER
-function render(){
-const g=document.getElementById("gImg");
-
-IMGS.forEach(i=>{
-const on=activas.has(i.id);
-
-g.innerHTML+=`
-<div class="item">
-<img class="thumb" src="${i.src}">
-<div class="item-foot">
-
-<div class="item-link">🔗 ${linkGlobal}</div>
-
-${on?`
-<a class="btn-dl" href="${i.src}" target="_blank">⬇ GUARDAR IMAGEN</a>
-<button class="btn-copy" onclick="copyLink(this)">🔗 ENLACE DE TU LANDING</button>
-`:`
-<div style="opacity:.3;text-align:center">🔒 NO INCLUIDO</div>
-`}
-
-</div>
-</div>
-`;
-});
-}
-
-render();
-
 </script>
 
 </body>
