@@ -8,22 +8,45 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-  :root {
-    --bg:#07070f; --bg2:#0e0e1a; --fucsia:#ff2d78;
-    --amarillo:#ffe600; --blanco:#fff; --gris:#666680; --gris2:#333345;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--blanco);font-family:'Nunito',sans-serif;}
-  .content-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:20px;}
-  .item{background:var(--bg2);border-radius:10px;overflow:hidden;}
-  .thumb{width:100%;aspect-ratio:9/16;object-fit:cover;}
-  .item-foot{padding:10px;}
-  .btn-copy,.btn-dl{
-    width:100%;padding:10px;border:none;border-radius:6px;
-    margin-top:6px;font-family:'Bebas Neue';letter-spacing:2px;
-  }
-  .btn-copy{background:transparent;color:var(--gris);border:1px solid var(--gris2);}
-  .btn-dl{background:var(--fucsia);color:white;}
+:root{--bg:#07070f;--bg2:#0e0e1a;--fucsia:#ff2d78;--amarillo:#ffe600;--blanco:#fff;--gris:#666680;--gris2:#333345;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--blanco);font-family:'Nunito',sans-serif;}
+
+.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:20px;}
+
+.item{background:var(--bg2);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);}
+.thumb{width:100%;aspect-ratio:9/16;object-fit:cover;}
+.item-foot{padding:10px;}
+
+.item-link{font-size:10px;color:var(--amarillo);margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;}
+
+.btn-copy,.btn-dl{
+width:100%;
+padding:9px;
+border-radius:6px;
+font-family:'Bebas Neue';
+letter-spacing:2px;
+margin-top:6px;
+}
+
+.btn-copy{
+background:transparent;
+border:1px solid var(--gris2);
+color:var(--gris);
+}
+
+.btn-copy.copied{
+border-color:var(--fucsia);
+color:var(--fucsia);
+}
+
+.btn-dl{
+background:var(--fucsia);
+color:#fff;
+text-decoration:none;
+display:block;
+text-align:center;
+}
 </style>
 </head>
 
@@ -33,6 +56,7 @@
 
 <script>
 
+// 🔥 PARAMS
 const params = new URLSearchParams(window.location.search);
 
 // 🔥 LINK DINÁMICO
@@ -40,47 +64,62 @@ const linkGlobal = params.get("link") || "https://tulocal.com";
 
 // 🔥 ACTIVAS
 const activas = new Set(
-  (params.get("activas") || "").split(",").map(Number)
+  (params.get("activas") || "").split(",").map(Number).filter(Boolean)
 );
 
 // 🔥 IMÁGENES
 const IMGS = [
-  {id:1,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263235/Gemini_Generated_Image_bruchsbruchsbruc_etzmgj.png"},
-  {id:2,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_ehiim7ehiim7ehii_i5crwt.png"},
-  {id:3,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_sbvguqsbvguqsbvg_vjubkz.png"},
-  {id:4,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263238/Copilot_20260315_233635_sbtrat.png"}
+{ id:1,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263235/Gemini_Generated_Image_bruchsbruchsbruc_etzmgj.png"},
+{ id:2,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_ehiim7ehiim7ehii_i5crwt.png"},
+{ id:3,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_sbvguqsbvguqsbvg_vjubkz.png"},
+{ id:4,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263238/Copilot_20260315_233635_sbtrat.png"},
+{ id:5,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263716/Copilot_20260314_071451_przxv4.png"},
+{ id:6,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263716/Copilot_20260314_071211_qm7jab.png"},
+{ id:7,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263717/Gemini_Generated_Image_ogy5k5ogy5k5ogy5_aycznb.png"},
+{ id:8,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263718/Gemini_Generated_Image_ducsgqducsgqducs_es4g86.png"},
+{ id:9,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263718/Copilot_20260314_065249_x97xrh.png"},
+{ id:10,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264237/Copilot_20260403_215554_do60bt.png"},
+{ id:11,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264267/Gemini_Generated_Image_ducsgqducsgqducs_tshxtu.png"},
+{ id:12,src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264370/Copilot_20260314_081306_boln31.png"}
 ];
 
-// 🔥 COPIAR
+// 🔥 COPIAR LINK
 function copyLink(btn){
-  navigator.clipboard.writeText(linkGlobal);
-  btn.innerText="COPIADO";
-  setTimeout(()=>btn.innerText="COPIAR ENLACE",1500);
+navigator.clipboard.writeText(linkGlobal).then(()=>{
+btn.textContent="✅ COPIADO";
+btn.classList.add("copied");
+setTimeout(()=>{
+btn.textContent="🔗 ENLACE DE TU LANDING";
+btn.classList.remove("copied");
+},2000);
+});
 }
 
 // 🔥 RENDER
 function render(){
-  const g = document.getElementById("gImg");
+const g=document.getElementById("gImg");
 
-  IMGS.forEach(i=>{
-    const activa = activas.has(i.id);
+IMGS.forEach(i=>{
+const on=activas.has(i.id);
 
-    g.innerHTML += `
-      <div class="item">
-        <img class="thumb" src="${i.src}">
-        <div class="item-foot">
+g.innerHTML+=`
+<div class="item">
+<img class="thumb" src="${i.src}">
+<div class="item-foot">
 
-        ${activa ? `
-          <a class="btn-dl" href="${i.src}" target="_blank">DESCARGAR</a>
-          <button class="btn-copy" onclick="copyLink(this)">COPIAR ENLACE</button>
-        ` : `
-          <div style="opacity:.3;text-align:center">🔒 BLOQUEADO</div>
-        `}
+<div class="item-link">🔗 ${linkGlobal}</div>
 
-        </div>
-      </div>
-    `;
-  });
+${on?`
+<a class="btn-dl" href="${i.src}" target="_blank">⬇ GUARDAR IMAGEN</a>
+<button class="btn-copy" onclick="copyLink(this)">🔗 ENLACE DE TU LANDING</button>
+`:`
+<div style="opacity:.3;text-align:center">🔒 NO INCLUIDO</div>
+`}
+
+</div>
+</div>
+`;
+});
 }
 
 render();
