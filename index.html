@@ -3,65 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>S2A Studio — Hamburguesería</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<title>Pack S2A</title>
 
 <style>
-/* TODO TU CSS IGUAL (no cambia nada) */
+body {
+  background:#0b0b0b;
+  font-family:Arial;
+  color:white;
+  padding:20px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.card {
+  background:#111;
+  padding:10px;
+  border-radius:10px;
+}
+
+img {
+  width:100%;
+  border-radius:10px;
+}
+
+button {
+  margin-top:10px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#ff2d78;
+  color:white;
+  font-weight:bold;
+}
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">STORY<em>2</em>ACTION</div>
-  <div class="rubro-tag">HAMBURGUESERÍA</div>
-</header>
-
-<div class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-eyebrow">ACCESO EXCLUSIVO · PACK DEL MES</div>
-  <div class="hero-title">TU CONTENIDO<br><span>ESTÁ LISTO</span></div>
-  <div class="hero-line"></div>
-  <div class="hero-sub">Descargá, publicá y convertí<br>cada historia en una venta.</div>
-</div>
-
-<div class="section">
-  <div class="section-body">
-    <div class="content-grid" id="gImg"></div>
-  </div>
-</div>
+<div class="grid" id="grid"></div>
 
 <script>
 
-const IMGS = [
-  { id:1, src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263235/Gemini_Generated_Image_bruchsbruchsbruc_etzmgj.png", link:"https://tulocal.com/promo" },
-  { id:2, src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_ehiim7ehiim7ehii_i5crwt.png", link:"https://tulocal.com/promo" },
-  { id:3, src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_sbvguqsbvguqsbvg_vjubkz.png", link:"https://tulocal.com/promo" },
-];
-
 const params = new URLSearchParams(window.location.search);
 
-function makeItem(it) {
+const items = [
+  {id:1, img:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263235/Gemini_Generated_Image_bruchsbruchsbruc_etzmgj.png"},
+  {id:2, img:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_ehiim7ehiim7ehii_i5crwt.png"},
+  {id:3, img:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263237/Gemini_Generated_Image_sbvguqsbvguqsbvg_vjubkz.png"}
+];
 
-  const dynamicLink = params.get("link" + it.id) || it.link;
-
-  return `
-  <div style="background:#111;padding:10px;border-radius:10px">
-    <img src="${it.src}" style="width:100%;border-radius:10px">
-    <button onclick="navigator.clipboard.writeText('${dynamicLink}')" 
-    style="margin-top:10px;width:100%;padding:10px;background:#ff2d78;color:white;border:none;border-radius:8px">
-    COPIAR LINK
-    </button>
-  </div>
-  `;
+function copyLink(link){
+  navigator.clipboard.writeText(link);
+  alert("Link copiado");
 }
 
 function render(){
-  const g = document.getElementById("gImg");
-  IMGS.forEach(i => {
-    g.innerHTML += makeItem(i);
+  const grid = document.getElementById("grid");
+
+  items.forEach(item => {
+
+    const link = params.get("link" + item.id) || "https://tulocal.com";
+
+    grid.innerHTML += `
+      <div class="card">
+        <img src="${item.img}">
+        <button onclick="copyLink('${link}')">
+          COPIAR LINK
+        </button>
+      </div>
+    `;
   });
 }
 
