@@ -43,8 +43,8 @@
   .thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
   .thumb-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; color: var(--gris2); font-size: 24px; }
   .thumb-ph span { font-family: 'Bebas Neue', sans-serif; font-size: 9px; letter-spacing: 3px; }
-  .thumb-num { position: absolute; top: 8px; left: 8px; background: rgba(7,7,15,0.8); font-family: 'Bebas Neue', sans-serif; font-size: 10px; padding: 3px 7px; border-radius: 3px; color: var(--gris); }
-  .lock-layer { position: absolute; inset: 0; background: rgba(7,7,15,0.75); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; backdrop-filter: blur(2px); }
+  .thumb-num { position: absolute; top: 8px; left: 8px; background: rgba(7,7,15,0.8); font-family: 'Bebas Neue', sans-serif; font-size: 10px; padding: 3px 7px; border-radius: 3px; color: var(--gris); z-index: 5; }
+  .lock-layer { position: absolute; inset: 0; background: rgba(7,7,15,0.75); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; backdrop-filter: blur(2px); z-index: 10; }
   .lock-label { font-family: 'Bebas Neue', sans-serif; font-size: 9px; letter-spacing: 4px; color: var(--fucsia); }
   .item-foot { padding: 10px; }
   .item-link { font-size: 10px; color: var(--amarillo); margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 900; }
@@ -52,14 +52,9 @@
   .btn-copy { background: transparent; color: var(--gris); font-size: 12px; padding: 7px; border: 1px solid var(--gris2); margin-bottom: 6px; }
   .btn-copy.copied { border-color: var(--fucsia); color: var(--fucsia); }
   .btn-dl { background: var(--fucsia); color: var(--blanco); font-size: 13px; padding: 9px; text-decoration: none; border: none; }
-  .step { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-  .step-n { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--fucsia); opacity: 0.5; }
-  .step-t { font-weight: 900; font-size: 13px; }
-  .step-d { font-size: 11px; color: var(--gris); line-height: 1.5; }
   .wa-wrap { margin: 24px; padding: 32px 24px; border: 1px solid rgba(255,45,120,0.15); border-radius: 16px; text-align: center; background: var(--bg2); }
   .btn-wa { background: #25d366; color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: 18px; padding: 14px 32px; border-radius: 100px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
   footer { text-align: center; padding: 40px; font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 4px; color: #2a2a3a; }
-  footer em { color: var(--fucsia); font-style: normal; }
 </style>
 </head>
 <body>
@@ -99,31 +94,16 @@
   <div class="section-body"><div class="content-grid" id="gVid"></div></div>
 </div>
 
-<div class="section" id="s-pasos">
-  <div class="section-header" onclick="tog('s-pasos')">
-    <div class="section-left">
-      <div class="section-title">CÓMO <em>PUBLICAR</em></div>
-      <div class="section-count">GUÍA RÁPIDA</div>
-    </div>
-    <div class="chevron">▼</div>
-  </div>
-  <div class="section-body">
-    <div class="step"><div class="step-n">1</div><div><div class="step-t">Descargá el archivo</div><div class="step-d">Tocá el botón "Guardar" de la imagen elegida.</div></div></div>
-    <div class="step"><div class="step-n">2</div><div><div class="step-t">Copiá el enlace</div><div class="step-d">Usá el botón "Copiar enlace" para el sticker de Instagram.</div></div></div>
-  </div>
-</div>
-
 <div class="wa-wrap">
   <div class="wa-title" style="font-family:'Bebas Neue'; font-size:24px; margin-bottom:10px;">¿TENÉS DUDAS?</div>
-  <a class="btn-wa" href="https://wa.me/TUNUMERO" target="_blank">💬 WHATSAPP</a>
+  <a class="btn-wa" href="https://wa.me/5491100000000" target="_blank">💬 WHATSAPP</a>
 </div>
 
 <footer>STORY<em>2</em>ACTION · STUDIO · 2026</footer>
 
 <script>
-  // LEER DATOS DE LA URL
   const params = new URLSearchParams(window.location.search);
-  const linkGlobal = params.get('link') || 'tulocal.com/promo';
+  const linkGlobal = params.get('link') || 'tulocal.com';
   const activas = new Set((params.get('activas') || '').split(',').map(Number).filter(Boolean));
 
   const IMGS = [
@@ -138,14 +118,14 @@
     { id:9,  src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775263718/Copilot_20260314_065249_x97xrh.png" },
     { id:10, src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264237/Copilot_20260403_215554_do60bt.png" },
     { id:11, src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264267/Gemini_Generated_Image_ducsgqducsgqducs_tshxtu.png" },
-    { id:12, src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264370/Copilot_20260314_081306_boln31.png" },
+    { id:12, src:"https://res.cloudinary.com/ds2udm1nc/image/upload/v1775264370/Copilot_20260314_081306_boln31.png" }
   ];
 
   const VIDS = [
-    { id:13, src:null },
-    { id:14, src:null },
-    { id:15, src:null },
-    { id:16, src:null },
+    { id:13, src:"https://res.cloudinary.com/ds2udm1nc/video/upload/v1775616634/XRecorder_20260407_02_2_qlycjr.mp4" },
+    { id:14, src:"https://res.cloudinary.com/ds2udm1nc/video/upload/v1775616610/XRecorder_20260407_03_2_gh4ml7.mp4" },
+    { id:15, src:"https://res.cloudinary.com/ds2udm1nc/video/upload/v1775616560/XRecorder_20260407_04_2_zlmcw6.mp4" },
+    { id:16, src:"https://res.cloudinary.com/ds2udm1nc/video/upload/v1775616525/XRecorder_20260407_05_2_h1r9sw.mp4" }
   ];
 
   function makeItem(it, isVid) {
@@ -154,14 +134,11 @@
     const label = (isVid ? 'VID' : 'IMG') + ' ' + String(num).padStart(2,'0');
 
     let media = it.src 
-      ? (isVid ? `<video class="thumb" src="${it.src}" muted playsinline></video>` : `<img class="thumb" src="${it.src}" loading="lazy">`)
+      ? (isVid ? `<video class="thumb" src="${it.src}" muted playsinline loop></video>` : `<img class="thumb" src="${it.src}" loading="lazy">`)
       : `<div class="thumb-ph">${isVid?'🎬':'🖼'}<span>PRÓXIMO</span></div>`;
 
     const lock = !on ? `<div class="lock-layer"><div class="lock-icon">🔒</div><div class="lock-label">NO INCLUIDO</div></div>` : '';
-
-    const btnDl = (on && it.src) 
-      ? `<a class="btn-dl" href="${it.src}" download="S2A-${it.id}.png" onclick="dlFeedback(this)">⬇ GUARDAR CONTENIDO</a>` 
-      : '';
+    const btnDl = (on && it.src) ? `<a class="btn-dl" href="${it.src}" download="S2A-${it.id}" onclick="dlFeedback(this)">⬇ GUARDAR CONTENIDO</a>` : '';
 
     return `
     <div class="item${on?' activa':''}">
@@ -199,8 +176,7 @@
   }
 
   function tog(id) { document.getElementById(id).classList.toggle('open'); }
-
   render();
 </script>
 </body>
-    </html>
+</html>
