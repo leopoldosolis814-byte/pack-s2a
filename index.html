@@ -13,7 +13,7 @@
   :root { 
     --bg: #07070f; --bg2: #0e0e1a; --fucsia: #ff2d78; --amarillo: #ffe600; 
     --blanco: #ffffff; --gris: #666680; --gris2: #333345; 
-    --naranja-vibrante: #ff6a00; /* Nuevo color: Naranja eléctrico vibrante */
+    --naranja: #ff6a00; 
     --insta: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,25 +53,16 @@
   .item-foot { padding: 10px; display: flex; flex-direction: column; gap: 6px; }
   .btn-ui { display: block; width: 100%; font-family: 'Bebas Neue', sans-serif; text-align: center; border-radius: 6px; cursor: pointer; text-decoration: none; border: none; letter-spacing: 1px; transition: transform 0.2s; }
   .btn-ui:active { transform: scale(0.96); }
-
-  /* BOTONES REESTILIZADOS */
   .btn-save { background: var(--fucsia); color: var(--blanco); font-size: 13px; padding: 10px; }
-  .btn-copy-link { 
-    background: var(--naranja-vibrante); /* Nuevo color de fondo */
-    color: var(--blanco); /* Texto blanco resalta */
-    font-size: 12px; 
-    padding: 8px; 
-    font-weight: 900;
-  }
+  .btn-copy-link { background: var(--naranja); color: var(--blanco); font-size: 12px; padding: 8px; font-weight: 900; }
   .btn-instagram { background: var(--insta); color: var(--blanco); font-size: 12px; padding: 8px; }
 
-  /* PASOS */
   .step { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
   .step-n { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--fucsia); opacity: 0.5; }
   .step-t { font-weight: 900; font-size: 13px; margin-bottom: 2px; }
   .step-d { font-size: 11px; color: var(--gris); line-height: 1.5; }
 
-  .wa-wrap { margin: 24px; padding: 32px 24px; border: 1px solid rgba(255,45,120,0.15); border-radius: 166px; text-align: center; background: var(--bg2); }
+  .wa-wrap { margin: 24px; padding: 32px 24px; border: 1px solid rgba(255,45,120,0.15); border-radius: 16px; text-align: center; background: var(--bg2); }
   .btn-wa { background: #25d366; color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: 18px; padding: 14px 32px; border-radius: 100px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
   footer { text-align: center; padding: 40px; font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 4px; color: #2a2a3a; }
 </style>
@@ -124,28 +115,27 @@
       <div class="step-n">1</div>
       <div>
         <div class="step-t">Guardá el archivo</div>
-        <div class="step-d">Tocá en "GUARDAR CONTENIDO" y guardalo en tu galería. Se abrirá en una pestaña nueva para que no se cierre esta página.</div>
+        <div class="step-d">Tocá en "GUARDAR CONTENIDO" y guardalo en tu galería.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-n">2</div>
       <div>
         <div class="step-t">Copiá tu link</div>
-        <div class="step-d">Tocá en "COPIAR ENLACE". Es el link que debés pegar en el Sticker de Instagram.</div>
+        <div class="step-d">Tocá en "COPIAR ENLACE". Es el link que debés pegar en el Sticker.</div>
       </div>
     </div>
     <div class="step">
       <div class="step-n">3</div>
       <div>
         <div class="step-t">¡A Instagram!</div>
-        <div class="step-d">Tocá en "ABRIR INSTAGRAM", seleccioná tu archivo y pegá el link en el sticker de historias.</div>
+        <div class="step-d">Tocá en "ABRIR INSTAGRAM" y pegá el link en tu historia.</div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="wa-wrap">
-  <div class="wa-title" style="font-family:'Bebas Neue'; font-size:24px; margin-bottom:10px;">¿TENÉS DUDAS?</div>
   <a class="btn-wa" href="https://wa.me/5491100000000" target="_blank">💬 WHATSAPP</a>
 </div>
 
@@ -182,23 +172,14 @@
     const on = activas.has(it.id);
     const num = isVid ? it.id - 12 : it.id;
     const label = (isVid ? 'VID' : 'IMG') + ' ' + String(num).padStart(2,'0');
-
-    let media = isVid 
-      ? `<video class="thumb" src="${it.src}" muted playsinline loop></video>` 
-      : `<img class="thumb" src="${it.src}" loading="lazy">`;
-
+    let media = isVid ? `<video class="thumb" src="${it.src}" muted playsinline loop></video>` : `<img class="thumb" src="${it.src}" loading="lazy">`;
     const lock = !on ? `<div class="lock-layer"><div class="lock-label">🔒 NO INCLUIDO</div></div>` : '';
     const buttons = on ? `
-      <a class="btn-ui btn-save" href="${it.src}" target="_blank" rel="noopener noreferrer">⬇ GUARDAR CONTENIDO</a>
+      <a class="btn-ui btn-save" href="${it.src}" target="_blank">⬇ GUARDAR CONTENIDO</a>
       <button class="btn-ui btn-copy-link" onclick="copyLink(this, '${linkGlobal}')">🔗 COPIAR ENLACE</button>
-      <a class="btn-ui btn-instagram" href="instagram://camera">📸 ABRIR INSTAGRAM</a>
+      <a class="btn-ui btn-instagram" href="https://www.instagram.com/reels/create/" target="_blank">📸 ABRIR INSTAGRAM</a>
     ` : '';
-
-    return `
-    <div class="item">
-      <div class="thumb-wrap">${media}<div class="thumb-num">${label}</div>${lock}</div>
-      <div class="item-foot">${buttons}</div>
-    </div>`;
+    return `<div class="item"><div class="thumb-wrap">${media}<div class="thumb-num">${label}</div>${lock}</div><div class="item-foot">${buttons}</div></div>`;
   }
 
   function render() {
@@ -213,8 +194,7 @@
 
   function copyLink(btn, link) {
     navigator.clipboard.writeText(link).then(() => {
-      const old = btn.textContent;
-      btn.textContent = '✅ ¡COPIADO!';
+      const old = btn.textContent; btn.textContent = '✅ ¡COPIADO!';
       setTimeout(() => { btn.textContent = old; }, 2000);
     });
   }
@@ -223,4 +203,4 @@
   render();
 </script>
 </body>
-</html>
+        </html>
