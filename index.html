@@ -52,6 +52,11 @@
   .btn-copy { background: transparent; color: var(--gris); font-size: 12px; padding: 7px; border: 1px solid var(--gris2); margin-bottom: 6px; }
   .btn-copy.copied { border-color: var(--fucsia); color: var(--fucsia); }
   .btn-dl { background: var(--fucsia); color: var(--blanco); font-size: 13px; padding: 9px; text-decoration: none; border: none; }
+  /* PASOS */
+  .step { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .step-n { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--fucsia); opacity: 0.5; }
+  .step-t { font-weight: 900; font-size: 13px; margin-bottom: 2px; }
+  .step-d { font-size: 11px; color: var(--gris); line-height: 1.5; }
   .wa-wrap { margin: 24px; padding: 32px 24px; border: 1px solid rgba(255,45,120,0.15); border-radius: 16px; text-align: center; background: var(--bg2); }
   .btn-wa { background: #25d366; color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: 18px; padding: 14px 32px; border-radius: 100px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
   footer { text-align: center; padding: 40px; font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 4px; color: #2a2a3a; }
@@ -92,6 +97,39 @@
     <div class="chevron">▼</div>
   </div>
   <div class="section-body"><div class="content-grid" id="gVid"></div></div>
+</div>
+
+<div class="section" id="s-uso">
+  <div class="section-header" onclick="tog('s-uso')">
+    <div class="section-left">
+      <div class="section-title">CÓMO <em>PUBLICAR</em></div>
+      <div class="section-count">GUÍA EN 3 PASOS</div>
+    </div>
+    <div class="chevron">▼</div>
+  </div>
+  <div class="section-body">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div>
+        <div class="step-t">Guardá el archivo</div>
+        <div class="step-d">Tocá en "GUARDAR CONTENIDO". El archivo se bajará a tu galería o carpeta de descargas.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div>
+        <div class="step-t">Copiá tu link personalizado</div>
+        <div class="step-d">Tocá en "COPIAR ENLACE". Ese es el link que debés usar en el Sticker de Instagram.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div>
+        <div class="step-t">Subí a Historias</div>
+        <div class="step-d">Seleccioná la imagen/video, agregá el Sticker de "Enlace", pegá lo que copiaste y ¡listo!</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="wa-wrap">
@@ -179,4 +217,4 @@
   render();
 </script>
 </body>
-</html>
+                                                                                                                    </html>
