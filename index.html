@@ -13,7 +13,7 @@
   :root { 
     --bg: #07070f; --bg2: #0e0e1a; --fucsia: #ff2d78; --amarillo: #ffe600; 
     --blanco: #ffffff; --gris: #666680; --gris2: #333345; 
-    --naranja-vibrante: #ff6a00; /* Nuevo color: Naranja eléctrico vibrante */
+    --naranja-vibrante: #ff6a00; 
     --insta: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,18 +54,16 @@
   .btn-ui { display: block; width: 100%; font-family: 'Bebas Neue', sans-serif; text-align: center; border-radius: 6px; cursor: pointer; text-decoration: none; border: none; letter-spacing: 1px; transition: transform 0.2s; }
   .btn-ui:active { transform: scale(0.96); }
 
-  /* BOTONES REESTILIZADOS */
   .btn-save { background: var(--fucsia); color: var(--blanco); font-size: 13px; padding: 10px; }
   .btn-copy-link { 
-    background: var(--naranja-vibrante); /* Nuevo color de fondo */
-    color: var(--blanco); /* Texto blanco resalta */
+    background: var(--naranja-vibrante); 
+    color: var(--blanco); 
     font-size: 12px; 
     padding: 8px; 
     font-weight: 900;
   }
   .btn-instagram { background: var(--insta); color: var(--blanco); font-size: 12px; padding: 8px; }
 
-  /* PASOS */
   .step { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
   .step-n { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--fucsia); opacity: 0.5; }
   .step-t { font-weight: 900; font-size: 13px; margin-bottom: 2px; }
@@ -191,7 +189,7 @@
     const buttons = on ? `
       <a class="btn-ui btn-save" href="${it.src}" target="_blank" rel="noopener noreferrer">⬇ GUARDAR CONTENIDO</a>
       <button class="btn-ui btn-copy-link" onclick="copyLink(this, '${linkGlobal}')">🔗 COPIAR ENLACE</button>
-      <a class="btn-ui btn-instagram" href="instagram://camera">📸 ABRIR INSTAGRAM</a>
+      <a class="btn-ui btn-instagram" href="https://www.instagram.com/" target="_blank">📸 ABRIR INSTAGRAM</a>
     ` : '';
 
     return `
