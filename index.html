@@ -50,13 +50,16 @@
   .item-link { font-size: 10px; color: var(--amarillo); margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 900; }
   .btn-copy, .btn-dl { display: block; width: 100%; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; text-align: center; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
   .btn-copy { background: transparent; color: var(--gris); font-size: 12px; padding: 7px; border: 1px solid var(--gris2); margin-bottom: 6px; }
-  .btn-copy.copied { border-color: var(--fucsia); color: var(--fucsia); }
   .btn-dl { background: var(--fucsia); color: var(--blanco); font-size: 13px; padding: 9px; text-decoration: none; border: none; }
+  .btn-dl.waiting { background: var(--amarillo); color: var(--bg); font-size: 10px; line-height: 1.2; padding: 5px; }
+  
   /* PASOS */
   .step { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
   .step-n { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--fucsia); opacity: 0.5; }
   .step-t { font-weight: 900; font-size: 13px; margin-bottom: 2px; }
   .step-d { font-size: 11px; color: var(--gris); line-height: 1.5; }
+  .step-d b { color: var(--amarillo); }
+
   .wa-wrap { margin: 24px; padding: 32px 24px; border: 1px solid rgba(255,45,120,0.15); border-radius: 16px; text-align: center; background: var(--bg2); }
   .btn-wa { background: #25d366; color: #fff; font-family: 'Bebas Neue', sans-serif; font-size: 18px; padding: 14px 32px; border-radius: 100px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; }
   footer { text-align: center; padding: 40px; font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 4px; color: #2a2a3a; }
@@ -112,7 +115,7 @@
       <div class="step-n">1</div>
       <div>
         <div class="step-t">Guardá el archivo</div>
-        <div class="step-d">Tocá en "GUARDAR CONTENIDO". El archivo se bajará a tu galería o carpeta de descargas.</div>
+        <div class="step-d">Tocá en "GUARDAR". Si el video se abre en una pestaña nueva, <b>mantené presionado el video y elegí "Guardar en Fotos" o "Descargar"</b>.</div>
       </div>
     </div>
     <div class="step">
@@ -176,7 +179,7 @@
       : `<div class="thumb-ph">${isVid?'🎬':'🖼'}<span>PRÓXIMO</span></div>`;
 
     const lock = !on ? `<div class="lock-layer"><div class="lock-icon">🔒</div><div class="lock-label">NO INCLUIDO</div></div>` : '';
-    const btnDl = (on && it.src) ? `<a class="btn-dl" href="${it.src}" download="S2A-${it.id}" onclick="dlFeedback(this)">⬇ GUARDAR CONTENIDO</a>` : '';
+    const btnDl = (on && it.src) ? `<a class="btn-dl" href="${it.src}" target="_blank" download="S2A-${it.id}" onclick="dlFeedback(this)">⬇ GUARDAR CONTENIDO</a>` : '';
 
     return `
     <div class="item${on?' activa':''}">
@@ -203,18 +206,20 @@
     navigator.clipboard.writeText(link).then(() => {
       const old = btn.textContent;
       btn.textContent = '✅ COPIADO';
-      setTimeout(() => { btn.textContent = old; }, 2000);
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = old; btn.classList.remove('copied'); }, 2000);
     });
   }
 
   function dlFeedback(btn) {
     const txt = btn.innerText;
-    btn.innerText = "⏳ PREPARANDO...";
-    setTimeout(() => { btn.innerText = "✅ GUARDADO"; setTimeout(() => btn.innerText = txt, 2000); }, 1000);
+    btn.classList.add('waiting');
+    btn.innerHTML = "SI SE ABRE:<br>MANTENÉ PRESIONADO Y GUARDÁ";
+    setTimeout(() => { btn.classList.remove('waiting'); btn.innerText = txt; }, 4000);
   }
 
   function tog(id) { document.getElementById(id).classList.toggle('open'); }
   render();
 </script>
 </body>
-                                                                                                                    </html>
+</html>
